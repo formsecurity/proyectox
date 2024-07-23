@@ -191,14 +191,13 @@
             .then(data => {
                 // Aquí se puede manejar la respuesta del servidor
                 if (data) {
-                    alert('Datos guardados exitosamente');
                     
                     // Redirigir a index.html después de 2 segundos
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1000); // 2000 milisegundos = 2 segundos
                 } else {
-                    errorMessage.textContent = 'Error al guardar los datos';
+                    errorMessage.textContent = 'Error estamos con problemas en estos momentos';
                     errorMessage.style.display = 'block';
                 }
             })
