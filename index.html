@@ -3,155 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Continuar con</title>
+    <title>¡Exprésate sobre IA!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #e0eafc);
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            
+            overflow: hidden;
         }
+
         .container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
             text-align: center;
-            background-color: #ffffff;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 400px;
-            animation: fadeIn 1s ease-in-out;
-            position: relative;
-        }
-        h1 {
-            margin-bottom: 30px;
-            color: #333;
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-        }
-        .button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 25px;
-            margin: 10px 0;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 600;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
-            z-index: 1;
         }
-        .button i {
-            margin-right: 12px;
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .comment-box {
+            margin-bottom: 20px;
+            cursor: pointer; /* Indica que es interactivo */
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            resize: none; /* Evita el cambio de tamaño del área de texto */
+        }
+
+        textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+            outline: none;
+        }
+
+        .submit-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: #007bff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+
+        .feedback-message, .congrats-message {
+            display: none;
             font-size: 20px;
+            color: #28a745;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
-        .google {
-            background-color: #db4437;
-        }
-        .facebook {
-            background-color: #4267B2;
-        }
-        .button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-        .button::before {
-            content: "";
-            position: absolute;
+
+        .stars {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.1);
-            transform: scaleX(0);
-            transform-origin: 0 0;
-            transition: transform 0.3s ease;
-            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            overflow: hidden;
         }
-        .button:hover::before {
-            transform: scaleX(1);
-        }
-        .loader {
+
+        .stars div {
             position: absolute;
-            border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
-            border-top: 4px solid #fff;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
+            background: #ffcc00;
+            opacity: 0;
+            animation: star-fall 3s ease-in-out forwards;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        .checkmark {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            line-height: 150px;
+            font-size: 60px;
+            color: #28a745;
+            z-index: 2000;
         }
+
+        .checkmark::before {
+            content: '\f00c'; /* Unicode for checkmark */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            animation: checkmark-pop 0.5s ease-in-out;
+        }
+
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        @keyframes star-fall {
+            0% { transform: translateY(-100%); opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+
+        @keyframes checkmark-pop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         @media (max-width: 480px) {
             .container {
-                padding: 30px 20px;
+                padding: 20px;
             }
             h1 {
-                font-size: 1.6rem;
+                font-size: 28px;
             }
-            .button {
+            textarea {
+                height: 80px;
                 font-size: 14px;
-                padding: 12px;
             }
+            .submit-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+        /* Estilos del modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Continuar con</h1>
-        <a href="google.html" class="button google" id="google-button">
-            <i class="fab fa-google"></i> Google
-            <div class="loader" id="google-loader" style="display: none;"></div>
-        </a>
-        <a href="facebook.html" class="button facebook" id="facebook-button">
-            <i class="fab fa-facebook-f"></i> Facebook
-            <div class="loader" id="facebook-loader" style="display: none;"></div>
-        </a>
+        <h1>¡Queremos tu Opinión sobre la Inteligencia Artificial!</h1>
+        <p>La IA está tomando el mundo a un ritmo increíble. Desde asistentes virtuales hasta recomendaciones personalizadas, su impacto nos afecta a cada uno de nosotros. ¿Qué opinas tú sobre su influencia en tu vida y el futuro? <br>¡Tu opinión es crucial!</p>
+        <div class="comment-box" onclick="showModal()">
+            <textarea id="comment" placeholder="Escribe tu comentario aquí..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitComment()">Enviar Comentario</button>
+        <div class="feedback-message" id="feedbackMessage">¡Gracias por tu comentario!</div>
+        <div class="congrats-message" id="congratsMessage">¡Felicidades! Tu comentario ha sido enviado.</div>
     </div>
+
+    <!-- Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>¡Necesitamos tu Opinión!</h2>
+            <p>Para continuar, por favor inicia sesión en nuestra página. <br> Haz clic en el botón a continuación para acceder.</p>
+            <button onclick="redirectToLogin()">Ir a Iniciar Sesión</button>
+        </div>
+    </div>
+
+    <div class="stars" id="stars"></div>
+    <div class="checkmark" id="checkmark"></div>
+
     <script>
-        document.getElementById('google-button').addEventListener('click', function(event) {
-            event.preventDefault(); // Previene el comportamiento por defecto del enlace
-            showLoader('google-loader');
-            setTimeout(function() {
-                window.location.href = 'google.html'; // Redirige después de 3 segundos
-            }, 2000);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si el usuario ha pasado por google.html
+            if (document.referrer.includes('google.html')) {
+                sessionStorage.setItem('fromGoogle', 'true');
+            }
+
+            // Verificar si el comentario ya fue enviado
+            if (localStorage.getItem('commentSubmitted')) {
+                document.querySelector('.container').innerHTML = `
+                    <h1>¡Gracias por tu participación!</h1>
+                    <p>Tu comentario ya ha sido enviado. ¡Agradecemos tu contribución y entusiasmo por la Inteligencia Artificial!</p>
+                `;
+                return;
+            }
+
+            // Verificar si el usuario fue redirigido desde google.html
+            if (sessionStorage.getItem('fromGoogle') === 'true') {
+                document.getElementById('loginModal').style.display = 'none';
+            }
         });
 
-        document.getElementById('facebook-button').addEventListener('click', function(event) {
-            event.preventDefault(); // Previene el comportamiento por defecto del enlace
-            showLoader('facebook-loader');
-            setTimeout(function() {
-                window.location.href = 'facebook.html'; // Redirige después de 3 segundos
+        function showModal() {
+            // Verificar si el usuario fue redirigido desde google.html
+            if (sessionStorage.getItem('fromGoogle') !== 'true') {
+                document.getElementById('loginModal').style.display = 'flex';
+            } else {
+                document.getElementById('comment').focus();
+            }
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        function submitComment() {
+            const comment = document.getElementById('comment').value.trim();
+
+            if (comment === '') {
+                alert('Por favor, escribe un comentario antes de enviar.');
+                return;
+            }
+
+            // Guardar el comentario en localStorage
+            localStorage.setItem('commentSubmitted', 'true');
+
+            // Mostrar mensaje de feedback
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            feedbackMessage.style.display = 'block';
+
+            // Mostrar efecto de confeti y checkmark
+            const stars = document.getElementById('stars');
+            const checkmark = document.getElementById('checkmark');
+            stars.style.display = 'block';
+            checkmark.style.display = 'block';
+
+            // Crear estrellas de confeti
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.style.left = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 10 + 5 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                stars.appendChild(star);
+            }
+
+            setTimeout(() => {
+                stars.style.display = 'none';
+                checkmark.style.display = 'none';
+                feedbackMessage.style.display = 'none';
+                document.getElementById('congratsMessage').style.display = 'block';
+
+                // Redirigir después de 3 segundos
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
             }, 3000);
-        });
-
-        function showLoader(loaderId) {
-            document.querySelectorAll('.loader').forEach(loader => loader.style.display = 'none');
-            document.getElementById(loaderId).style.display = 'inline-block';
         }
     </script>
 </body>
